@@ -5,7 +5,7 @@ const loadData = (searchValue, dataLimit) => {
 }
 
 const displayData = (phones, dataLimit) => {
-    console.log(phones);
+    // console.log(phones);
     const phoneContainer = document.getElementById('phones-container');
     // display 10 only
     const showAll = document.getElementById('btn-show-all');
@@ -41,7 +41,7 @@ const displayData = (phones, dataLimit) => {
             lead....
           </p>
         </div>
-        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#phoneDetails">Details</button>
+        <button onclick="loadPhoneDetails('${phone.slug}')" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#phoneDetails">Details</button>
       </div>
         `;
         phoneContainer.appendChild(phoneCard);
@@ -69,7 +69,7 @@ const toggelSpinner = isLoading => {
         spinnerDiv.classList.remove('d-none');
     }
     else {
-        spinnerDiv.classList.add('d-none')
+        spinnerDiv.classList.add('d-none');
     }
 }
 
@@ -79,7 +79,23 @@ document.getElementById('btn-show-all').addEventListener('click', function () {
 
 
 const loadPhoneDetails = async (id) => {
-    
+    const URL = `https://openapi.programming-hero.com/api/phone/${id}`
+    fetch(URL)
+        .then(res => res.json())
+        .then(data => displayPhoneDetails(data))
+}
+
+const displayPhoneDetails = phone => {
+    console.log(phone.data.releaseDate
+        );
+    const modalTitle = document.getElementById('phoneDetailsLabel');
+    modalTitle.innerText = phone.data.name;
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
+        <img src="${phone.data.image}">
+        <p>Release Date: ${phone.data.releaseDate ? phone.data.releaseDate : "No Release Date Found"}</p>
+    `;
+
 }
 
 
