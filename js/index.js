@@ -16,6 +16,15 @@ const displayData = (phones, dataLimit) => {
     else {
         showAll.classList.add('d-none');
     }
+    // no message found
+    const noPhoneMsg = document.getElementById('no-found-msg');
+    if (phones.length == 0 ) {
+        noPhoneMsg.classList.remove('d-none')
+    }
+    else {
+        noPhoneMsg.classList.add('d-none')
+    }
+    
     phoneContainer.innerHTML = '';
     phones.forEach(phone => {
         // console.log(phone);
@@ -32,12 +41,16 @@ const displayData = (phones, dataLimit) => {
             lead....
           </p>
         </div>
-        <button type="button" class="btn btn-info">Details</button>
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#phoneDetails">Details</button>
       </div>
         `;
         phoneContainer.appendChild(phoneCard);
     })
+
+    // stop spinner
+    toggelSpinner(false);
 }
+
 document.getElementById('search-value').addEventListener('keypress', function (e) {
     if (e.key === "Enter") {
         displayBySearch(10)
@@ -45,9 +58,29 @@ document.getElementById('search-value').addEventListener('keypress', function (e
 })
 
 const displayBySearch = (dataLimit) => {
+    toggelSpinner(true)
     const searchValue = document.getElementById('search-value').value;
     loadData(searchValue, dataLimit);
 }
 
+const toggelSpinner = isLoading => {
+    const spinnerDiv = document.getElementById('spinner');
+    if (isLoading) {
+        spinnerDiv.classList.remove('d-none');
+    }
+    else {
+        spinnerDiv.classList.add('d-none')
+    }
+}
 
-// loadData('apple');
+document.getElementById('btn-show-all').addEventListener('click', function () {
+    displayBySearch();
+})
+
+
+const loadPhoneDetails = async (id) => {
+    
+}
+
+
+loadData('apple');
